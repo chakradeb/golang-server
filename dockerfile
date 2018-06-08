@@ -1,12 +1,17 @@
-FROM alpine:3.7
+FROM golang:1.10
 
-WORKDIR /go
+RUN mkdir $GOPATH/src/app
 
-ADD . /go
+WORKDIR $GOPATH/src/app
+
+ADD . .
 
 EXPOSE 8000
 
+RUN curl https://glide.sh/get | sh
+
+RUN glide install
+
 ENV CONFIG_PATH=./config/config.json
 
-ENTRYPOINT /go/app
-
+CMD go run main.go
