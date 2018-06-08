@@ -8,4 +8,5 @@ EXPOSE 8000
 
 ENV CONFIG_PATH=./config/config.json
 
-ENTRYPOINT ["./app"]
+ENTRYPOINT /go/app
+
