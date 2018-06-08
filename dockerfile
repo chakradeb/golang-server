@@ -1,17 +1,17 @@
 FROM golang:1.10
 
-RUN mkdir $GOPATH/src/app
+RUN mkdir /app
 
-WORKDIR $GOPATH/src/app
+WORKDIR /app
 
-ADD . .
+ADD build build
+
+ADD public public
+
+ADD config config
 
 EXPOSE 8000
 
 RUN curl https://glide.sh/get | sh
 
-RUN glide install
-
-ENV CONFIG_PATH=./config/config.json
-
-CMD go run main.go
+CMD ["./build/server-linux"]
