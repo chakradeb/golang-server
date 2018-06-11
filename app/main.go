@@ -21,7 +21,7 @@ type Page struct {
 var config = Configuration{}
 
 func RenderHTML(res http.ResponseWriter,filename string,p *Page) {
-	file, _ := template.ParseFiles(filename + ".html")
+	file, _ := template.ParseFiles( filename + ".html")
 	file.Execute(res,p.content)
 }
 

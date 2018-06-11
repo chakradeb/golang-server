@@ -12,4 +12,6 @@ ADD config config
 
 EXPOSE 8000
 
-CMD ["./build/server-linux"]
+ENV CONFIG_PATH=./config/config.json
+
+CMD ["build/server-linux"]
