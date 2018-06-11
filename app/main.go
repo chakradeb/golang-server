@@ -31,7 +31,7 @@ func LandingPageHandler(res http.ResponseWriter, req *http.Request)  {
 }
 
 func LogPort(Port int)  {
-	fmt.Println("Serving on Container Port "+ strconv.Itoa(Port))
+	fmt.Println("Serving on Port "+ strconv.Itoa(Port))
 }
 
 func main() {
