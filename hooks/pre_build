@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "=> Building the binary"
-docker run --privileged \
-  -v $(pwd):/app \
-  -v /var/run/docker.sock:/var/run/docker.sock \
+docker run --rm \
+  -e OUTPUT=/build/server \
+  -v $(pwd):/src \
   centurylink/golang-builder
