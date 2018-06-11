@@ -1,8 +1,8 @@
 FROM alpine:3.7
 
-RUN mkdir /app
+RUN mkdir /server
 
-WORKDIR /app
+WORKDIR /server
 
 ADD build build
 
