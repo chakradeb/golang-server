@@ -2,5 +2,6 @@
 echo "=> Building the binary"
 docker run --rm \
   -e OUTPUT=/build/server \
+  -e MAIN_PATH=/app \
   -v $(pwd):/src \
   centurylink/golang-builder
