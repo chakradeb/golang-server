@@ -1,4 +1,4 @@
-FROM golang:1.10
+FROM alpine:3.7
 
 RUN mkdir /app
 
@@ -11,7 +11,5 @@ ADD public public
 ADD config config
 
 EXPOSE 8000
-
-RUN curl https://glide.sh/get | sh
 
 CMD ["./build/server-linux"]
