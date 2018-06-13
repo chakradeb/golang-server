@@ -1,36 +1,25 @@
 package main
 
 import (
-	"net/http"
-	"testing"
+	"github.com/stretchr/testify/mock"
 	"net/http/httptest"
+	"testing"
+	"github.com/stretchr/testify/assert"
+	"net/http"
 )
 
-//func TestSlashRoute(t *testing.T) {
-//	recorder := httptest.NewRecorder()
-//	request := httptest.NewRequest("GET", "/", nil)
-//	http.
-//
-//	assert.Equal(t, "Hello", recorder.Body)
-//}
+type MockPage struct {
+	mock.Mock
+}
+
+func (page MockPage) RenderHTML(res http.ResponseWriter,filename string) {
+	res.Write([]byte(filename))
+}
 
 func TestLandingPageHandler(t *testing.T) {
-	type args struct {
-		res http.ResponseWriter
-		req *http.Request
-	}
-	req,_ := http.NewRequest("GET","/",nil)
+	mock := MockPage{}
 	res := httptest.NewRecorder()
-	arg := args{res, req}
-	tests := []struct {
-		name string
-		args args
-	}{
-		{"/",arg},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			LandingPageHandler(tt.args.res, tt.args.req)
-		})
-	}
+	req := httptest.NewRequest("GET", "/", nil)
+	Render(mock,"abc")(res,req)
+	assert.Equal(t,"abc",res.Body.String())
 }

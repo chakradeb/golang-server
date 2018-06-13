@@ -1,0 +1,8 @@
+hash: 2bcb35d03672e06d86f12dd537f4294cee06ac96ffd7e025a8dcf3dc5b0394b4
+updated: 2018-06-12T12:33:39.763226+05:30
+imports:
+- name: github.com/stretchr/testify
+  version: 69483b4bd14f5845b5a1e55bca19e954e827f1d0
+- name: github.com/tkanos/gonfig
+  version: 140e7c7ecea9170d71a841e208b86685c845eb53
+testImports: []

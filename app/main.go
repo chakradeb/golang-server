@@ -9,34 +9,45 @@ import (
 	"os"
 )
 
+type Renderer interface {
+	RenderHTML(w http.ResponseWriter,filename string)
+}
+
 type Configuration struct {
 	Port int
 	Filename string
 }
 
+var config = Configuration{}
+
 type Page struct {
 	content []byte
 }
 
-var config = Configuration{}
-
-func RenderHTML(res http.ResponseWriter,filename string,p *Page) {
-	file, _ := template.ParseFiles( filename + ".html")
-	file.Execute(res,p.content)
+func (page Page)RenderHTML(res http.ResponseWriter,filename string) {
+	file, err := template.ParseFiles( filename + ".html")
+	if err!=nil {
+		page.content = []byte("page not found")
+		res.WriteHeader(404)
+		res.Write(page.content)
+	}
+	file.Execute(res,page.content)
 }
 
-func LandingPageHandler(res http.ResponseWriter, req *http.Request)  {
-	landingPage := &Page{}
-	RenderHTML(res,config.Filename,landingPage)
+func Render(page Renderer,filename string) func(w http.ResponseWriter,r *http.Request) {
+	return func(w http.ResponseWriter,r *http.Request) {
+		page.RenderHTML(w,filename)
+	}
+
 }
 
 func LogPort(Port int)  {
-	fmt.Println("Serving on Container Port "+ strconv.Itoa(Port))
+	fmt.Println("Serving on Port "+ strconv.Itoa(Port))
 }
 
 func main() {
 	gonfig.GetConf(os.Getenv("CONFIG_PATH"),&config)
-	http.HandleFunc("/", LandingPageHandler)
+	http.HandleFunc("/", Render(Page{},config.Filename))
 	LogPort(config.Port)
 	http.ListenAndServe(":" + strconv.Itoa(config.Port), nil)
 }
