@@ -1,6 +1,6 @@
-FROM alpine:3.7
+FROM scratch
 
-ADD build build
+ADD build/server-linux build/
 ADD public public
 
 ENV PORT=8000
