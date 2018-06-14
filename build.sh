@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-cd app
+cd cmd
 
 go test ./...
 

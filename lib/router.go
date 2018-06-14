@@ -4,11 +4,23 @@ import (
 	"net/http"
 )
 
-func Router() *http.ServeMux {
-	path := "/Users/debarc/go/src/github.com/debuc/golang-server/public/index.html"
-	page := PageHandler(path)
+type Route interface {
+	Router() *http.ServeMux
+}
+
+type StaticServer struct {
+	route string
+	filepath string
+}
+
+func NewStaticServer(route string, filepath string) *StaticServer {
+	return &StaticServer{route, filepath}
+}
+
+func (p *StaticServer) Router() *http.ServeMux {
+	page := NewPage(p.filepath)
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/index", page)
+	mux.HandleFunc(p.route, page.Handle())
 	return mux
 }
