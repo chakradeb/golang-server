@@ -5,13 +5,10 @@ RUN mkdir /server
 WORKDIR /server
 
 ADD build build
-
 ADD public public
-
 ADD config config
 
+ENV PORT=8000
 EXPOSE 8000
-
-ENV CONFIG_PATH=./config/config.json
 
 CMD ["build/server-linux"]

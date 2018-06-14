@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 cd app
 
-go test main_test.go main.go
+go test ./...
 
 GOOS=linux GOARCH=amd64 go build -o ../build/server-linux
 GOOS=darwin GOARCH=amd64 go build -o ../build/server-darwin
