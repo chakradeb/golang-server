@@ -3,7 +3,13 @@ sudo: required
 language: go
 
 services:
-  - docker
+- docker
+
+env:
+  global:
+  - secure: riglRWQCRuoFPXFq3qCKtNzwcvmyCCCX/H+zbbOPKDoVU69YoUqKEoPwMUrAbADojlDDK3ym8IVEuei9uev0SNWnV0Z/9zkRMAVuTDERYw7U5N/V3oRrfYl+cj9asGumkooNOdc/Tc6K9JqqxPS13VVc5b5Z8cJiODlHBBSIA8Wq27k3VZg7Ng869DxjR+RkLGJgMLf8ReSjcVzZZFsyYYGw5X3a+nLvjghVRMdT2eIeUSDz5FCW8DJgVPhyA+eFoZUz//ZlIowkfglw+4H2E7AfUr4BC4Fr08jAf8uc2p0q9CenwUmSgca8meO54iirOy0nL0Fq1AI1Q5ms7Cc0y9RDK+kRbF4sl21sOocDXO6218Uj8oeOod7vGx2gfHft1XyaqDUA3NeQz4FjYw7zdCYPktt7Wv6z40l/dRp9crUST5U1xlltQ+ebCCf4brAv05Gp47y4KaGu4+6nbnQXoagfjqhQAA533Jz/K6pQrzyskIkfTKRJlTfPd3uuCZDjkcfzxuMiRuB+x+YrnOKmsZKx/LwOkFYYj9E7XuStVtGE8YY/D7yKhKSfwDw8hg04d6YpVZf7hmBeIOAuCL0RUmH+fGu5ZDLKOGgR4gHRodPs6TsAeOayhXNNtBmoaxw9vwjN7W7ngGlB9yO3hNLTtKO/wSP72r8f7xlwkrpKpr0=
+  - secure: CoRGc0DQ39uHSQZvrFy68Vao2m48F8CTfL5Ac9Fws9I6Kh/nJyhVwGKnS9c3Q1hYIfDFyzk91yuRFbf1/bZ9sCZj8MA/PEkWZ9dKVfuBg2CfGI9LQrJb/MZ/KiqRsycH88Uyxyg17gUvE3lk3J9JUaqhNFeXU3N+sEITgTISlWh+VPnTJN0au8AdkLhDm078KSucApu0rWQ6ONUYi2w8hXMPYVVMzpv5ZiFN5OjUhjTGsOd2MJXTIvXiV90iqlBn6BEltUwbR8oZUjdPFZiVUWsahFXt8vBWPQjq9UkN7tmaJAWYGeRSYPR5QXgiU6rig2LjuKHuymcEITCk9yH5XhZhJi5uhpbFEJGUslXSZyG6kMvuPKEHapYCkbaMSOXJfsYyORqEnN+2InRPM25hpJed9KBqxF8HJ1FLoczkeSy10O1DmCGejLChj0PBh2nytHGTdnSZOXxQ6fZOvUq3+EGUDj/DRHYUGHtQfZXY2Sj5zzQTK7AS/Qzg1FLN1pecR+k+/5tTEsMnWU96Lx/MSepgJRoCDl/qB9CaA5cFt1PTgc4YwLVFjY3fQvhmqYafpMF9XDz/F83c6KkFfCwVU3P9hbbi5v4GKmC2Rt/qBnCoHT4ZQLHKMGLqyQoFfp9V6MvHX2gcoIRZFGNn/zA7nkaGaWqNa5RIxZPd9O5fwxc=
+  - secure: iGr2uahzeVlOkjTRHUja5gaOpQoM31aRgDEuKT+YiVVu0PJUDG8DG/7RaD1pmqOKPuonHyZZsAZic5skeOnDMBSWaBZBoXKvmuroz4+P96uYAni8ZgU2/k3I2iWwnrkAeoNG2rRkqxrrln5/MIKE195CspbmjTvQPY6Zc36qtk4NNPA+uoy2VFqJJzA8Ke8a7Q6QFKq10gz0soV5pXqtsYPXdfDXFpdSsexR78HRMVnoCKIq288qdvBK6B19/zRBnwyTO05krqQmEBQTXY0B7aQM1AGLdSiWCH3htk+lbE2vtOBhEpbotuoIXqc0chlrTc5Q5cOInqqhGnr5DvPezFNUqETyotxGcoGuMpymF/mPS1aUbTeiNsp2y9sp+fYiF4dsVnwSReCnp8YiPe5ICwCETrSZ6i+tcq5wplUXdEz/HhaZ4gn78p8O2OGwmLPZ1PU+3PtytU8aFPvZtMbAAuWH7ti6+lVNMR9U7WAHlIo0k/mKiQfH8mWdiXI8fakXtZXd7Bj4YncdPImY+w55Z4jkPHNSIf/1wrI0hDM+vtoUJeZ8FO7ryGs0et8sajWyUia5Qyu/mIBrvVE7Unaw69BjTYHQvs7Qc4qgLlez5Cz2pjHV5nGECv6BN00y+WquoasxgPU18vOG/vQEjlTGIRlr+oaRVO9WjVdCELNlX5Y=
 
 before_script:
   - bash build.sh
@@ -12,10 +18,10 @@ before_script:
 script:
   - docker build --pull --cache-from debarc/golang-server --tag debarc/golang-server .
 
-deploy:
-  provider: script
-  script: bash docker-push.sh
-  on:
-    branch: master
-
-
+after_success:
+  - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+  - export REPO=debarc/golang-server
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - docker build -f Dockerfile -t golang-server .
+  - docker tag golang-server $REPO
+  - docker push $REPO
