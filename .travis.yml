@@ -1,12 +1,22 @@
-sudo: false
+sudo: required
 
 language: go
 
-go:
-  - "1.9.x"
+services:
+  - docker
 
-before_script:
-  - go get github.com/stretchr/testify
+before-script:
+  - bash build.sh
+  - docker pull debarc/golang-server
 
 script:
-  - go test -v -race ./...
+  - docker build --pull --cache-from debarc/golang-server --tag debarc/golang-server .
+  - docker run debarc/golang-server
+
+deploy:
+  provider: script
+  script: bash docker-push.sh
+  on:
+    branch: master
+
+
