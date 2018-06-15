@@ -5,7 +5,7 @@ language: go
 services:
   - docker
 
-before-script:
+before_script:
   - bash build.sh
   - docker pull debarc/golang-server
 
