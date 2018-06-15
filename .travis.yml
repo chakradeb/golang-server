@@ -11,7 +11,6 @@ before_script:
 
 script:
   - docker build --pull --cache-from debarc/golang-server --tag debarc/golang-server .
-  - docker run debarc/golang-server
 
 deploy:
   provider: script
