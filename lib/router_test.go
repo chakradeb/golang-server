@@ -4,29 +4,49 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
+	"strings"
 )
 
-func TestStaticServer_Router(t *testing.T) {
+func TestStaticServerForAValidURL(t *testing.T) {
 	w := httptest.NewRecorder()
 	r := httptest.NewRequest(http.MethodGet, "/index", nil)
 
 	server := NewStaticServer("/index","../public/index.html").Router()
 	server.ServeHTTP(w, r)
 
-	assert.Equal(t, http.StatusOK, w.Code, "Invalid response code")
-	assert.Contains(t, w.Body.String(), "<!DOCTYPE html>", "Invalid response body")
+	expectedStatusCode := http.StatusOK
+	actualStatusCode := w.Code
+
+	if actualStatusCode != expectedStatusCode {
+		t.Errorf("expected %d got %d", expectedStatusCode, actualStatusCode)
+	}
+
+	expectedString := "<!DOCTYPE html>"
+	actualString := w.Body.String()
+
+	if !strings.Contains(actualString, expectedString) {
+		t.Errorf("expected %v contains %v", actualString, expectedString)
+	}
 }
 
-func TestStaticServer_Router2(t *testing.T) {
+func TestStaticServerForAnInvalidURL(t *testing.T) {
 	w := httptest.NewRecorder()
 	r := httptest.NewRequest(http.MethodGet, "/invalid", nil)
 
 	server := NewStaticServer("/index","../public/index.html").Router()
 	server.ServeHTTP(w, r)
 
-	assert.Equal(t, http.StatusNotFound, w.Code, "Invalid response code")
-	assert.NotContains(t, w.Body.String(), "<!DOCTYPE html>", "Invalid response body")
-	assert.Equal(t, w.Body.String(), "404 page not found\n", "Invalid Error Message")
+	expectedStatusCode := http.StatusNotFound
+	actualStatusCode := w.Code
+
+	if actualStatusCode != expectedStatusCode {
+		t.Errorf("expected %d got %d", expectedStatusCode, actualStatusCode)
+	}
+
+	expectedString := "404 page not found\n"
+	actualString := w.Body.String()
+
+	if !strings.Contains(actualString, expectedString) {
+		t.Errorf("expected %v contains %v", actualString, expectedString)
+	}
 }

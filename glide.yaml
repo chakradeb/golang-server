@@ -1,4 +1,0 @@
-package: .
-import:
-- package: github.com/tkanos/gonfig
-- package: github.com/stretchr/testify
