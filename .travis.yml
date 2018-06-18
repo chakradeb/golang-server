@@ -12,7 +12,11 @@ env:
 
 before_script:
   - bash build.sh
-  - docker login -u $DOCKER_USER -p $DOCKER_PASS
+  - docker pull debarc/golang-server
 
 script:
-  - bash docker-publish.sh
+  - docker build --pull --cache-from debarc/golang-server --tag debarc/golang-server .
+
+after_success:
+  - docker login -u $DOCKER_USER -p $DOCKER_PASS
+  - docker push debarc/golang-server
