@@ -7,4 +7,4 @@ ENV PORT=8000
 
 EXPOSE 8000
 
-CMD ["./build/server-linux"]
+CMD ["build/server-linux"]
