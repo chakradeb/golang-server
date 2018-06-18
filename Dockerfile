@@ -1,6 +1,6 @@
 FROM scratch
 
-ADD build/server-linux build/server-linux
+ADD build build
 ADD public public
 
 ENV PORT=8000
