@@ -1,4 +1,4 @@
-FROM scratch
+FROM alpine
 
 ADD build build
 ADD public public
