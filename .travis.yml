@@ -11,8 +11,15 @@ env:
     - secure: Rzyi8+Ou0r1uqw5mHRKZLeT0cWOh1iKqfVz+NyrFc7Lnndw/Llz1Bct9Cl3698+/RGbrZd5xaeP4BzRagbWcfrttmVb0x4LJ+42BN7dw8km7nQyS32jPXGsKktQXbdEeinyche15wN67WyzcMCE0mI6RY4iWtJHnSjb7QrBrS8h8JJvhQhGfhsLiB1tySiKQax7xIi/QpQNt3pr9fWiVoP6tRs+5sfiOFhCEz/v5NlO8Ah6l9o4aVLn8BG7vItNCDEXp9UYOiQCDGfD5U9ec6yDOndTjvKGZdL2ScAqb7k4Wq5zFSnleZEJIg5rsLEzrdBUBwQvVHPQfgF8NQNR9HqVq380QGCRjtWEoVzO/qfO/5Jxv2taITW084nxMYN+nl+lVtf4XoAWtSAR8MOign5f7puZAu7z/hg/Tw1yBD31TMk5Za1K4A6b++u3W8rg/6A9O8WId/kmihuL57xjispoKjMdnD5cAj0aQLTKP7xWMB9BTI/hu7dYg2husXtwEmadFUE+OsXzK3WM0213bSRuPBRoYvGB41UDWscXzxdPCxh8BxKe5BstONh6wxU6J0z/chotTJEWZE9+IKUDf80H8deHLvq7GYCNc4BbZYbRi5+xns5vayW4t0nweUHgxK3T8EP57/bpKE8aMWiQn0gY41ny77D+Js79FDa7s5XM=
 
 before_script:
+  - apk add --no-cache curl
   - bash build.sh
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
 
 script:
-  - bash docker-publish.sh
+  - docker build -t golang-server .
+  - docker tag golang-server debarc/golang-server
+  - docker run -d debarc/golang-server
+  - bash test.sh
+
+after_success:
+  - docker push debarc/golang-server

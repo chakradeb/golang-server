@@ -1,6 +1,7 @@
 FROM alpine
 
 ADD build build
+
 ADD public public
 
 ENV PORT=8000
