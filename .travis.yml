@@ -18,7 +18,7 @@ before_script:
 script:
   - docker build -t golang-server .
   - docker tag golang-server debarc/golang-server
-  - go test client/client_test.go
+  - go test -v client/client_test.go
 
 after_success:
   - docker push debarc/golang-server
