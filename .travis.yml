@@ -19,7 +19,7 @@ script:
   - docker build -t golang-server .
   - docker tag golang-server debarc/golang-server
   - docker run -d -p 8000:8000 debarc/golang-server
-  - bash test.sh
+  - curl localhost:8000/index
 
 after_success:
   - docker push debarc/golang-server

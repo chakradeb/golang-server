@@ -1,6 +1,6 @@
-FROM amd64/alpine:3.7
+FROM scratch
 
-ADD build build
+ADD build/server-linux build/
 
 ADD public public
 
