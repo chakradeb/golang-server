@@ -6,7 +6,7 @@ go test ./...
 
 cd cmd
 
-GOOS=linux GOARCH=amd64 go build -o ../build/server-linux
-GOOS=darwin GOARCH=amd64 go build -o ../build/server-darwin
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o ../build/server-linux
+CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -o ../build/server-darwin
 
 cd ..

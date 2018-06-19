@@ -18,7 +18,7 @@ before_script:
 script:
   - docker build -t golang-server .
   - docker tag golang-server debarc/golang-server
-  - export PORT=8000 && build/server-linux &
+  - docker run -d -p 8000:8000 debarc/golang-server
   - bash test.sh
 
 after_success:
