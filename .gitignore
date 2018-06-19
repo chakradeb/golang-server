@@ -20,6 +20,3 @@ vendor/*
 # IDE
 .idea
 *.iml
-
-#Client
-client/*
