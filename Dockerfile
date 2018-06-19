@@ -1,4 +1,4 @@
-FROM alpine
+FROM amd64/alpine:3.7
 
 ADD build build
 
