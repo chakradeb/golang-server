@@ -5,10 +5,12 @@ import (
 	"io/ioutil"
 	"os/exec"
 	"testing"
+	"time"
 )
 
 const repo = "debarc/golang-server"
-const port = 8000
+const port = 8666
+const dockerPort = 8000
 
 func ExecuteCommand(t *testing.T, command string, logString string) {
 	t.Helper()
@@ -18,10 +20,11 @@ func ExecuteCommand(t *testing.T, command string, logString string) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	time.Sleep(4000)
 }
 
 func TestSlashIndexEndpointForGolangServer(t *testing.T) {
-	ExecuteCommand(t, fmt.Sprintf("docker run -d -p %d:%d %v", port, port, repo), "Running container from built image...")
+	ExecuteCommand(t, fmt.Sprintf("docker run -d -p %d:%d %v", port, dockerPort, repo), "Running container from built image...")
 	output, err := exec.Command("/bin/sh", "-c", fmt.Sprintf("curl localhost:%d/index", port)).Output()
 	if err != nil {
 		t.Fatal(err)
@@ -34,7 +37,7 @@ func TestSlashIndexEndpointForGolangServer(t *testing.T) {
 }
 
 func TestSlashEndpointForGolangServer(t *testing.T) {
-	ExecuteCommand(t, fmt.Sprintf("docker run -d -p %d:%d %v", port, port, repo), "Running container from built image")
+	ExecuteCommand(t, fmt.Sprintf("docker run -d -p %d:%d %v", port, dockerPort, repo), "Running container from built image")
 	output, err := exec.Command("/bin/sh", "-c", fmt.Sprintf("curl localhost:%d/", port)).Output()
 	if err != nil {
 		t.Fatal(err)
