@@ -33,7 +33,7 @@ func TestSlashIndexEndpointForGolangServer(t *testing.T) {
 	if string(output) != string(expectedOutput) {
 		t.Errorf("expected %v got %v", string(expectedOutput), string(output))
 	}
-	ExecuteCommand(t, fmt.Sprintf(`docker kill $(docker ps | grep "%v" | awk '{print $1}')`, repo), "Killing image...")
+	ExecuteCommand(t, fmt.Sprintf(`docker kill $(docker ps | grep "%v" | awk '{print $1}')`, repo), "Killing container...")
 }
 
 func TestSlashEndpointForGolangServer(t *testing.T) {
@@ -46,5 +46,5 @@ func TestSlashEndpointForGolangServer(t *testing.T) {
 	if string(output) != expectedOutput {
 		t.Errorf("expected %v got %v", expectedOutput, string(output))
 	}
-	ExecuteCommand(t, fmt.Sprintf(`docker kill $(docker ps | grep "%v" | awk '{print $1}')`, repo), "Killing image...")
+	ExecuteCommand(t, fmt.Sprintf(`docker kill $(docker ps | grep "%v" | awk '{print $1}')`, repo), "Killing container...")
 }
